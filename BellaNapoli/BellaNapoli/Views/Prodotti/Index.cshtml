@@ -4,6 +4,7 @@
     ViewBag.Title = "Index";
 }
 
+
 <h2>Index</h2>
 
 <p>
@@ -35,35 +36,66 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Foto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Foto2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Foto3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Prezzo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Consegna)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ingredienti)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idProdotto }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idProdotto }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idProdotto })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Foto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Foto2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Foto3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prezzo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Consegna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ingredienti)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.idProdotto }) |
+                @Html.ActionLink("Details", "Details", new { id = item.idProdotto }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.idProdotto })
+            </td>
+        </tr>
+    }
+
 
 </table>
+
+@* ------------------------------ TOASTS --------------------------------- *@
+
+@if (TempData["CreateMess"] != null)
+{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr.success('@TempData["CreateMess"]')
+    </script>
+}
+

@@ -24,10 +24,18 @@ namespace BellaNapoli.Controllers
         {
             using (var context = new ModelDbContext())
             {
+                var existingUser = context.Utenti.FirstOrDefault(u => u.Email == utente.Email);
+                if (existingUser != null)
+                {
+                    TempData["RegFail"] = "Utente già registrato";
+                    return View();
+                }
+
                 context.Utenti.Add(utente);
                 context.SaveChanges();
             }
-            return RedirectToAction("Index");
+            TempData["RegMess"] = "Registrazione effettuata con successo";
+            return RedirectToAction("Login");
         }
 
         public ActionResult Login()
@@ -43,13 +51,22 @@ namespace BellaNapoli.Controllers
                 if (user != null)
                 {
                     FormsAuthentication.SetAuthCookie(email, false);
+                    TempData["LoginMess"] = "Login effettuato con successo";
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
+                    TempData["LoginFail"] = "Email o password errati";
                     return View();
                 }
             }
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            TempData["LoginMess"] = "Sei stato disconesso";
+            return RedirectToAction("Index", "Home");
         }
 
     }

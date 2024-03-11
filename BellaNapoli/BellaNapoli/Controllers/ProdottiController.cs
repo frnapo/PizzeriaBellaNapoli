@@ -49,6 +49,7 @@ namespace BellaNapoli.Controllers
             {
                 db.Prodotti.Add(prodotti);
                 db.SaveChanges();
+                TempData["CreateMess"] = "Prodotto inserito correttamente";
                 return RedirectToAction("Index");
             }
 
@@ -81,6 +82,7 @@ namespace BellaNapoli.Controllers
             {
                 db.Entry(prodotti).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["CreateMess"] = "Prodotto modificato correttamente";
                 return RedirectToAction("Index");
             }
             return View(prodotti);
@@ -109,6 +111,7 @@ namespace BellaNapoli.Controllers
             Prodotti prodotti = db.Prodotti.Find(id);
             db.Prodotti.Remove(prodotti);
             db.SaveChanges();
+            TempData["CreateMess"] = "Prodotto eliminato correttamente";
             return RedirectToAction("Index");
         }
 

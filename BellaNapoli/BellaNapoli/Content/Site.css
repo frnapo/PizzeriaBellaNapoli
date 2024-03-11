@@ -1,13 +1,79 @@
-﻿/* Set padding to keep content from hitting the edges */
-.body-content {
-    margin-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
+﻿
+/* x titoli pizze e navbar */
+@import url('https://fonts.googleapis.com/css2?family=Slackside+One&display=swap');
+/* x titoli pagine */
+@import url('https://fonts.googleapis.com/css2?family=Angkor&display=swap');
+/* x sottotitoli e testo */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
+
+input, select, textarea {
     max-width: 280px;
 }
+
+.navbar {
+    background-color: #401B23;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+}
+
+.nav-link {
+    font-family: 'Slackside One', sans-serif;
+}
+
+#bg-img {
+    background: url('/Content/imgs/background.png') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    margin-top: -194px;
+}
+
+#pizza {
+    background: url('/Content/imgs/pizza.png') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    height: 100vh;
+    margin-top: -194px;
+}
+
+#title {
+    color: white;
+    font-family: 'Angkor', sans-serif;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    right: -20%;
+    transform: translate(-50%, -50%);
+}
+
+#subtitle {
+    font-family: 'Comfortaa', sans-serif;
+    padding: 0;
+    margin: 0;
+    font-size: 0.8em;
+    font-weight: 200;
+    letter-spacing: 5px;
+}
+
+.menu-button {
+    filter: drop-shadow(0px 0px 0px black) !important;
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 16px;
+}
+
+
+/* ------------------------------ */
+#footer {
+    background-color: #401B23;
+    padding: 0;
+    margin: 0;
+    font-family: 'Comfortaa', sans-serif;
+    letter-spacing: 2px;
+}
+
+.toast {
+    margin-top: 72.42px !important;
+}
+

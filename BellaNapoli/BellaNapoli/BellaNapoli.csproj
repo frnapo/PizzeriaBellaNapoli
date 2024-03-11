@@ -195,6 +195,11 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\imgs\16x16.png" />
+    <Content Include="Content\imgs\32x32.png" />
+    <Content Include="Content\imgs\48x48.png" />
+    <Content Include="Content\imgs\background.png" />
+    <Content Include="Content\imgs\favicon.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.bundle.js" />
