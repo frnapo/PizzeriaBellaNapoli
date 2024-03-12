@@ -69,5 +69,10 @@ namespace BellaNapoli.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult Storia()
+        {
+            return View();
+        }
+
     }
 }

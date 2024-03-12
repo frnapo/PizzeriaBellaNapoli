@@ -5,9 +5,8 @@
 }
 
 
-<div class="second-bg py-5">
-    <h2 class="text-center heading">Login</h2>
-</div>
+    <h2 class="text-center heading mt-3 mb-5">Login</h2>
+
 
 <div class="container">
     @using (Html.BeginForm())
@@ -19,7 +18,7 @@
             <div class="form-group text-center">
                 <p class="p-0 my-2">E-mail</p>
                 <div class="col-12 text-center">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control mx-auto text-white" } })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control py-1 mx-auto" } })
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -27,22 +26,20 @@
             <div class="form-group text-center">
                 <p class="p-0 my-2">Password</p>
                 <div class="col-12 text-center">
-                    @Html.EditorFor(model => model.Psw, new { htmlAttributes = new { @class = "form-control mx-auto text-white" } })
+                    @Html.EditorFor(model => model.Psw, new { htmlAttributes = new { @class = "form-control py-1 mx-auto" } })
                     @Html.ValidationMessageFor(model => model.Psw, "", new { @class = "text-danger" })
                 </div>
              </div>
 
             <div class="form-group text-center">
                 <div class="col-12 ms-auto">
-                    <input type="submit" value="Login" class="btn btn-success menu-button px-5 my-3" />
+                    <input type="submit" value="Login" class="btn btn-success menu-button w-100 my-5" />
                 </div>
             </div>
         </div>
     }
 </div>
 
-<div class="third-bg py-5">
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

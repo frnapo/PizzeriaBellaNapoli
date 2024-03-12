@@ -5,9 +5,7 @@
 }
 
 
-<div class="second-bg py-5">
-    <h2 class="text-center heading">Le nostre pizze</h2>
-</div>
+    <h2 class="text-center heading mt-1 mb-3">Le nostre pizze</h2>
 
 <div class="container">
     @Html.ActionLink("+ Aggiungi pizza", "Create", new { }, new { @class = "ms-2 btn btn-success menu-button px-5 mb-3" })
@@ -23,7 +21,7 @@
 
             <div class="col-7 d-flex flex-column">
                 <div>
-                    <h3 class="ms-2 pizza-head display-4">@item.Nome</h3>
+                    <h3 class="ms-2 pizza-head display-5 mt-4">@item.Nome</h3>
                     <p class="ms-2">@item.Ingredienti</p>
                     <div class="ms-2 d-flex">
                         <input type="number" name="quantita" value="1" min="1" max="30">
@@ -32,7 +30,8 @@
                 </div>
                 <div class="mt-3">
                     <div>
-                        <span class="ms-2">🕗</span>@item.Consegna
+                        @* mostro solo i minuti col metodo Minutes di TimeSpan *@
+                        <span class="ms-2"><i class="bi bi-clock me-2"></i></span>@item.Consegna.Minutes minuti
                         @*@Html.ActionLink("Modifica", "Edit", new { id = item.idProdotto }) |
                             @Html.ActionLink("Elimina", "Delete", new { id = item.idProdotto })*@
                     </div>
@@ -41,9 +40,6 @@
         </div>
     }
 
-</div>
-
-<div class="third-bg py-5">
 </div>
 
 

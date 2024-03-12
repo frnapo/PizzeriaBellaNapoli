@@ -47,7 +47,6 @@ namespace BellaNapoli.Controllers
             var cart = Session["cart"] as List<Prodotti>;
             if (cart != null && cart.Any())
             {
-                // Create a new order
                 Ordini newOrder = new Ordini();
                 newOrder.DataOrdine = DateTime.Now;
                 newOrder.isEvaso = false;
@@ -69,7 +68,6 @@ namespace BellaNapoli.Controllers
                     db.Dettagli.Add(newDetail);
                     db.SaveChanges();
                 }
-
                 cart.Clear();
             }
 

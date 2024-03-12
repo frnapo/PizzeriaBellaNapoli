@@ -175,6 +175,7 @@
     <Compile Include="Models\Ordini.cs" />
     <Compile Include="Models\Prodotti.cs" />
     <Compile Include="Models\SiteRole.cs" />
+    <Compile Include="Models\StringExtensios.cs" />
     <Compile Include="Models\Utenti.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -199,6 +200,7 @@
     <Content Include="Content\imgs\16x16.png" />
     <Content Include="Content\imgs\32x32.png" />
     <Content Include="Content\imgs\48x48.png" />
+    <Content Include="Content\imgs\background-test.png" />
     <Content Include="Content\imgs\background.png" />
     <Content Include="Content\imgs\favicon.png" />
     <Content Include="favicon.ico" />
@@ -256,6 +258,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Carrello\Index.cshtml" />
+    <Content Include="Views\Home\Storia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
