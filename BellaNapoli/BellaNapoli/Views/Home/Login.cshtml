@@ -5,44 +5,43 @@
 }
 
 
-<h2>Login</h2>
+<div class="second-bg py-5">
+    <h2 class="text-center heading">Login</h2>
+</div>
 
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group text-center">
+                <p class="p-0 my-2">E-mail</p>
+                <div class="col-12 text-center">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control mx-auto text-white" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-    <div class="form-horizontal">
-        <h4>Utenti</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group text-center">
+                <p class="p-0 my-2">Password</p>
+                <div class="col-12 text-center">
+                    @Html.EditorFor(model => model.Psw, new { htmlAttributes = new { @class = "form-control mx-auto text-white" } })
+                    @Html.ValidationMessageFor(model => model.Psw, "", new { @class = "text-danger" })
+                </div>
+             </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            <div class="form-group text-center">
+                <div class="col-12 ms-auto">
+                    <input type="submit" value="Login" class="btn btn-success menu-button px-5 my-3" />
+                </div>
             </div>
         </div>
+    }
+</div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Psw, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Psw, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Psw, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<div class="third-bg py-5">
 </div>
 
 @section Scripts {
@@ -61,7 +60,7 @@
             "debug": false,
             "newestOnTop": false,
             "progressBar": true,
-            "positionClass": "toast-top-center",
+            "positionClass": "toast-top-right",
             "preventDuplicates": false,
             "onclick": null,
             "showDuration": "300",
@@ -87,7 +86,7 @@
             "debug": false,
             "newestOnTop": false,
             "progressBar": true,
-            "positionClass": "toast-top-center",
+            "positionClass": "toast-top-right",
             "preventDuplicates": false,
             "onclick": null,
             "showDuration": "300",

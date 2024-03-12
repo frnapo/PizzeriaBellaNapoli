@@ -10,7 +10,6 @@ namespace BellaNapoli.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
-
             return View();
         }
 
@@ -66,6 +65,7 @@ namespace BellaNapoli.Controllers
         {
             FormsAuthentication.SignOut();
             TempData["LoginMess"] = "Sei stato disconesso";
+            Session.Clear();
             return RedirectToAction("Index", "Home");
         }
 

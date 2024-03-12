@@ -1,10 +1,8 @@
 namespace BellaNapoli.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("Utenti")]
     public partial class Utenti
@@ -26,12 +24,15 @@ namespace BellaNapoli.Models
         [StringLength(50)]
         public string Cognome { get; set; }
 
+        [Display(Name = "E-mail")]
         [Required]
         [StringLength(200)]
         public string Email { get; set; }
 
+        [Display(Name = "Password")]
         [Required]
         [StringLength(50)]
+        [DataType(DataType.Password)]
         public string Psw { get; set; }
 
         public bool isAdmin { get; set; }
@@ -40,6 +41,7 @@ namespace BellaNapoli.Models
         [StringLength(5)]
         public string CAP { get; set; }
 
+        [Display(Name = "Città")]
         [Required]
         [StringLength(200)]
         public string Citta { get; set; }
