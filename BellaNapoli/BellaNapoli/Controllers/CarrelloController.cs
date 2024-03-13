@@ -37,7 +37,7 @@ namespace BellaNapoli.Controllers
             return RedirectToAction("Index");
         }
 
-        //action per pushare i prodotti nel db su Ordini
+        //action per pushare i prodotti nel db su Ordini e Dettagli
         [HttpPost]
         public ActionResult Ordina(string note, string indirizzo)
         {

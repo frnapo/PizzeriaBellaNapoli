@@ -13,7 +13,7 @@ namespace BellaNapoli.Controllers
             return View();
         }
 
-        // metodi per la registrazione e il login
+        // actions per la registrazione e il login
         public ActionResult Register()
         {
             return View();

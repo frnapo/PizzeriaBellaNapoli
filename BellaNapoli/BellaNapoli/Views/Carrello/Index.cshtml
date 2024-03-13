@@ -10,10 +10,8 @@
             @foreach (var item in Model)
             {
                 <div class="row mb-4 bg-white mx-2 shadow rounded-3">
-                    <div class="col-5  shadow rounded-3 rounded-start px-0 text-center">
-                        <a href="@Url.Action("Details", "Prodotti", new { id = item.idProdotto })">
-                            <img class="p-3" src="@item.Foto" alt="Pizza" style="width:100%; max-width: 200px">
-                        </a>
+                    <div class="col-5  shadow rounded-0 rounded-start px-0 text-center">
+                            <img class="p-3" src="./Content/imgs/@item.Foto" alt="Pizza" style="width:100%; max-width: 150px">
                     </div>
 
                     <div class="col-7 d-flex flex-column">
@@ -30,7 +28,7 @@
                                 }
                             </div>
                             <div class="mt-4 d-flex align-items-center">
-                                @Html.ActionLink(item.Prezzo.ToString("F2") + "€ - Rimuovi", "Delete", new { id = item.idProdotto }, new { @class = "shadow btn btn-outline-danger w-100 rounded-pill" })
+                                @Html.ActionLink(item.Prezzo.ToString("F2") + "€ - Rimuovi", "Delete", new { id = item.idProdotto }, new { @class = "shadow btn btn-outline-danger w-100 rounded-pill mb-2" })
                             </div>
                         </div>
                     </div>
@@ -43,7 +41,7 @@
                 <div class="row">
                     <div class="col-12 bg-white shadow rounded-3 mb-3">
                         <h3 class="fs-4 my-3 fw-bold">Pizzeria BellaNapoli</h3>
-                        @if (DateTime.Now < new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 30, 0))
+                        @if (DateTime.Now < new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 30, 0) || DateTime.Now > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 0, 0))
                         {
                             <p class="text-orange mb-0 pb-0"><span class="fw-bolder">Chiusi</span> • 18.30 - 23.00</p>
                             <p class="text-orange m-0 p-0 mb-2">Il tuo ordine verra' evaso dalle 18.30</p>
@@ -75,10 +73,10 @@
 
                         <textarea placeholder="Note aggiuntive sul tuo ordine..." id="note" name="note" required class="form-control bg-white rounded-3" rows="3" style="resize: none;"></textarea>
                         @{
-                            double mediaMinuti = Model.Average(item => item.Consegna.TotalMinutes);
-                            TimeSpan mediaConsegna = TimeSpan.FromMinutes(mediaMinuti);
+                            double maxMinuti = Model.Max(item => item.Consegna.TotalMinutes);
+                            TimeSpan maxConsegna = TimeSpan.FromMinutes(maxMinuti);
                         }
-                        <p class="m-0 p-0 mt-3 mb-2">Consegna stimata: @mediaConsegna.TotalMinutes.ToString("F0") minuti</p>
+                        <p class="m-0 p-0 mt-3 mb-2">Consegna stimata: @maxConsegna.TotalMinutes.ToString("F0") minuti</p>
 
                         <p>Totale: @Model.Sum(item => item.Prezzo).ToString("F2")€</p>
                         <input type="submit" class="btn btn-success menu-button w-100 p-2 mb-3" value="Conferma" />

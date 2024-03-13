@@ -252,7 +252,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Prodotti\Create.cshtml" />
     <Content Include="Views\Prodotti\Delete.cshtml" />
-    <Content Include="Views\Prodotti\Details.cshtml" />
     <Content Include="Views\Prodotti\Edit.cshtml" />
     <Content Include="Views\Prodotti\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />

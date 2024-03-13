@@ -1,39 +1,44 @@
-﻿@model IEnumerable<BellaNapoli.Models.Prodotti>
-
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
-
-    <h2 class="text-center heading mt-1 mb-3">Le nostre pizze</h2>
+<h2 class="text-center heading mt-1 mb-3">Le nostre pizze</h2>
 
 <div class="container">
-    @Html.ActionLink("+ Aggiungi pizza", "Create", new { }, new { @class = "ms-2 btn btn-success menu-button px-5 mb-3" })
+    <div class="d-flex justify-content-center">
+        @if (User.IsInRole("Admin"))
+        {
+            @Html.ActionLink("+ Aggiungi un prodotto", "Create", new { }, new { @class = "ms-2 btn btn-success menu-button px-5 mb-3 w-50" })
+        }
+    </div>
+
 
     @foreach (var item in Model)
     {
-        <div class="row mb-4 mx-2">
-            <div class="col-5 d-flex align-items-end justify-content-end @*bg-white shadow*@ rounded-3 rounded-start px-0 text-center">
-                <a href="@Url.Action("Details", "Prodotti", new { id = item.idProdotto })">
-                    <img class="p-3 pizza-image" src="@item.Foto" alt="Pizza" style="width:100%; max-width: 250px">
-                </a>
+        <div class="row mb-5 mb-md-4 mx-2 rounded-3 shadow">
+            <div class="col-12 col-md-5 rounded-0 rounded-start bg-white shadow d-flex align-items-end justify-content-end  px-0 text-center">
+               <img class="p-3 pizza-image" src="./Content/imgs/@item.Foto" alt="Pizza" style="width:100%; max-width: 200px">
             </div>
 
-            <div class="col-7 d-flex flex-column">
+            <div class="col-12 rounded-0 rounded-end col-md-7 bg-light shadow d-flex flex-column">
                 <div>
-                    <h3 class="ms-2 pizza-head display-5 mt-4">@item.Nome</h3>
-                    <p class="ms-2">@item.Ingredienti</p>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3 class="ms-2 pizza-head display-5 mt-1 mt-md-3 mb-0 pb-0">@item.Nome</h3>
+                            <span class="ms-2"><i class="bi bi-clock me-2"></i></span>@item.Consegna.Minutes minuti
+                        </div>
+                        <div class="mt-2">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                @Html.ActionLink(" ", "Edit", new { id = item.idProdotto }, new { @class = "bi bi-pencil-square text-decoration-none admin-action fs-4 text-dark mx-2" })
+                                @Html.ActionLink(" ", "Delete", new { id = item.idProdotto }, new { @class = "bi bi-x-circle text-decoration-none fs-4 admin-action text-danger" })
+                            }
+                        </div>
+                    </div>
+                    <p class="ms-2 mt-3">@item.Ingredienti</p>
                     <div class="ms-2 d-flex">
                         <input type="number" name="quantita" value="1" min="1" max="30">
-                        <div class="btn btn-success menu-button rounded-0 buy-button px-4 ms-2" onclick="location.href='@Url.Action("AddToCart", "Prodotti", new { id = item.idProdotto })'">@item.Prezzo.ToString("F2")€</div>
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <div>
-                        @* mostro solo i minuti col metodo Minutes di TimeSpan *@
-                        <span class="ms-2"><i class="bi bi-clock me-2"></i></span>@item.Consegna.Minutes minuti
-                        @*@Html.ActionLink("Modifica", "Edit", new { id = item.idProdotto }) |
-                            @Html.ActionLink("Elimina", "Delete", new { id = item.idProdotto })*@
+                        <div class="btn btn-outline-success w-100 shadow menu-button rounded-0 buy-button px-4 mb-3" onclick="location.href='@Url.Action("AddToCart", "Prodotti", new { id = item.idProdotto })'">@item.Prezzo.ToString("F2")€ - Carrello</div>
                     </div>
                 </div>
             </div>
@@ -96,5 +101,3 @@
         toastr.warning('@TempData["CartMessage"]')
     </script>
 }
-
-
