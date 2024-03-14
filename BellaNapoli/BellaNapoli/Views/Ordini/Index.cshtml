@@ -7,6 +7,18 @@
 <h2 class="text-center heading mt-3 mb-0">Gestione ordini</h2>
 <h6 class="text-center m-0 p-0 mb-2"> @Html.ActionLink("Passa a gestione utenti", "Index", "Utenti")</h6>
 
+<div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="text-center">
+        @Html.ActionLink("Ordini Evasi", "GetNumeroOrdini", new { }, new { @class = "btn btn-success rounded-1 my-2", style = "width: auto;", @onclick = "totalOrders(); return false;" })
+        <p id="totalOrders" class="mt-2"></p>
+    </div>
+
+    <div class="text-center">
+        <input type="date" id="date" class="form-control" style="width: auto; margin: 0 auto;" />
+        <button class="btn btn-success mt-2" onclick="getRevenueForDay(document.getElementById('date').value)">Totale incassato</button>
+        <p id="totPerGiorno" class="mt-2"></p>
+    </div>
+</div>
 
 <div id="orderDetails"></div>
 
@@ -73,6 +85,41 @@
 
 
 <script>
+
+function getRevenueForDay(date) {
+    if (!date) {
+        $('#totPerGiorno').text('Selezionare una data valida');
+        return;
+    }
+    $.ajax({
+        url: '@Url.Action("IncassatoPerGiorno", "Ordini")',
+        type: 'GET',
+        data: { data: date },
+        success: function (data) {
+            $('#totPerGiorno').text('Incasso per il giorno ' + date + ': ' + data + '€');
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status==500){
+                $('#totPerGiorno').text('Nessun incasso per la data selezionata');
+            }
+        }
+    });
+}
+
+
+    function totalOrders() {
+    $.ajax({
+        url: '@Url.Action("GetNumeroOrdini", "Ordini")',
+        type: 'GET',
+        success: function (data) {
+            $('#totalOrders').text('Ordini totali evasi: ' + data);
+        },
+        error: function () {
+            $('#totalOrders').text('Errore');
+        }
+    });
+}
+
     function loadOrderDetails(orderId) {
         $.get('@Url.Action("Details", "Ordini")', { id: orderId }, function (data) {
             $('#orderDetails').html(data);

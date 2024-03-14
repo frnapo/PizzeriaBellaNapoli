@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="text-center heading mt-1 mb-3">Le nostre pizze</h2>
+
+<div class="container">
+    <div class="d-flex justify-content-center">
+        @if (User.IsInRole("Admin"))
+        {
+            @Html.ActionLink("+ Aggiungi un prodotto", "Create", new { }, new { @class = "ms-2 btn btn-success menu-button px-5 mb-3 w-50" })
+        }
+    </div>
+
+
+    @foreach (var item in Model)
+    {
+        <div class="row mb-5 mb-md-4 mx-2 rounded-3 shadow">
+        <div class="col-12 col-md-5 rounded-0 rounded-start bg-white shadow d-flex align-items-end justify-content-end px-0 text-center">
+            <img class="pizza-image rounded-0 shadow rounded-start" src="~/Content/imgs/@item.Foto" alt="Pizza" style="width:100%; height:100%; object-fit: cover; max-width: none;">
+        </div>
+
+            <div class="col-12 rounded-0 rounded-end col-md-7 bg-light shadow d-flex flex-column">
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3 class="ms-2 pizza-head display-5 mt-1 mt-md-3 mb-0 pb-0">@item.Nome</h3>
+                            <span class="ms-2"><i class="bi bi-clock me-2"></i></span>@item.Consegna.Minutes minuti
+                        </div>
+                        <div class="mt-2">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                @Html.ActionLink(" ", "Edit", new { id = item.idProdotto }, new { @class = "bi bi-pencil-square text-decoration-none admin-action fs-4 text-dark mx-2" })
+                                @Html.ActionLink(" ", "Delete", new { id = item.idProdotto }, new { @class = "bi bi-x-circle text-decoration-none fs-4 admin-action text-danger" })
+                            }
+                        </div>
+                    </div>
+                    <p class="ms-2 mt-3">@item.Ingredienti</p>
+                    <div class="ms-2 d-flex">
+
+                        @using (Html.BeginForm("AddToCart", "Prodotti", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.idProdotto" />
+                            <label for="Quantita">Quantità:</label>
+                            <input id="Quantita" type="number" name="quantita" value="1" min="1" max="30">
+                            <input type="submit" value="@item.Prezzo.ToString("F2")€ - Carrello" class="btn btn-outline-success w-100 shadow menu-button rounded-0 buy-button px-4 mb-3">
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+@* ------------------------------ TOASTS --------------------------------- *@
+
+@if (TempData["CreateMess"] != null)
+{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr.success('@TempData["CreateMess"]')
+    </script>
+}
+
+@if (TempData["CartMessage"] != null)
+{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr.warning('@TempData["CartMessage"]')
+    </script>
+}

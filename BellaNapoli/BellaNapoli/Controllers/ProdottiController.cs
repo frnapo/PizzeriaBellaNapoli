@@ -1,8 +1,11 @@
 ﻿using BellaNapoli.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 
 namespace BellaNapoli.Controllers
@@ -26,16 +29,37 @@ namespace BellaNapoli.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "idProdotto,Nome,Foto,Foto2,Foto3,Prezzo,Consegna,Ingredienti")] Prodotti prodotti)
+        public ActionResult Create([Bind(Include = "idProdotto,Nome,Foto,Foto2,Foto3,Prezzo,Consegna,Ingredienti")] Prodotti prodotti, HttpPostedFileBase file)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Prodotti.Add(prodotti);
-                db.SaveChanges();
-                TempData["CreateMess"] = "Prodotto inserito correttamente";
-                return RedirectToAction("Index");
-            }
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Content/Img"), fileName);
+                    if (!Directory.Exists(Server.MapPath("~/Content/Img")))
+                    {
+                        Directory.CreateDirectory(Server.MapPath("~/Content/Img"));
+                    }
+                    file.SaveAs(path);
+                    prodotti.Foto = "/Content/Img/" + fileName;
+                }
+                else
+                {
+                    prodotti.Foto = "/Content/Img/Default.jpg";
+                }
 
+                if (ModelState.IsValid)
+                {
+                    db.Prodotti.Add(prodotti);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Errore durante il salvataggio del file: " + ex.Message);
+            }
             return View(prodotti);
         }
 
@@ -57,15 +81,36 @@ namespace BellaNapoli.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "idProdotto,Nome,Foto,Foto2,Foto3,Prezzo,Consegna,Ingredienti")] Prodotti prodotti)
+        public ActionResult Edit(int id, [Bind(Include = "idProdotto,Nome,Foto,Foto2,Foto3,Prezzo,Consegna,Ingredienti,File")] Prodotti prodotti, HttpPostedFileBase File)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(prodotti).State = EntityState.Modified;
-                db.SaveChanges();
-                TempData["CreateMess"] = "Prodotto modificato correttamente";
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    if (File != null && File.ContentLength > 0)
+                    {
+                        var fileName = Path.GetFileName(File.FileName);
+                        var path = Path.Combine(Server.MapPath("~/Content/Img"), fileName);
+                        if (!Directory.Exists(Server.MapPath("~/Content/Img")))
+                        {
+                            Directory.CreateDirectory(Server.MapPath("~/Content/Img"));
+                        }
+                        File.SaveAs(path);
+
+                        prodotti.Foto = "/Content/Img/" + fileName;
+                    }
+
+                    db.Entry(prodotti).State = EntityState.Modified;
+                    db.SaveChanges();
+                    TempData["CreateMess"] = "Prodotto modificato correttamente";
+                    return RedirectToAction("Index");
+                }
             }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
+
             return View(prodotti);
         }
 

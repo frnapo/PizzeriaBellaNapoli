@@ -13,6 +13,10 @@ input {
     max-width: 700px !important;
 }
 
+.active .nav-link {
+    color: white;
+}
+
 .form-control {
     background-color: gainsboro;
 }
@@ -149,3 +153,31 @@ input {
    background-color: dimgray; 
 }
 
+.pizza-col {
+    overflow: hidden;
+    position: relative;
+}
+
+.pizza-info {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: bottom 0.5s ease;
+}
+
+.pizza-col:hover .pizza-info,
+.pizza-col:focus-within .pizza-info {
+    bottom: 40px; 
+}
+
+.pizza-image-container img {
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease; 
+}
+
+.pizza-col:hover .pizza-image-container img {
+    transform: scale(1.05); 
+}

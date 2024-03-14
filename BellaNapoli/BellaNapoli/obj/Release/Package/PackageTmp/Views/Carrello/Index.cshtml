@@ -1,0 +1,87 @@
+﻿@model IEnumerable<BellaNapoli.Models.Prodotti>
+
+@using BellaNapoli.Models
+
+<h2 class="text-center heading mt-1 mb-3">Carrello</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-8 px-2 px-md-4">
+            @foreach (var item in Model)
+            {
+                <div class="row mb-4 bg-white mx-2 shadow rounded-3">
+                    <div class="col-5  shadow rounded-0 rounded-start px-0 text-center">
+                            <img class="p-3" src="./Content/imgs/@item.Foto" alt="Pizza" style="width:100%; max-width: 150px">
+                    </div>
+
+                    <div class="col-7 d-flex flex-column">
+                        <div>
+                            <h3 class="fs-4 mt-3">@item.Quantita x @item.Nome</h3>
+                            <div>
+                                @{
+                                    var ingredienti = item.Ingredienti.Split(',');
+                                    foreach (var ingrediente in ingredienti)
+                                    {
+                                        var (badgeColor, textColor) = ingrediente.GetBadgeColors();
+                                        <span class="badge shadow" style="background-color: @badgeColor; color: @textColor">@ingrediente</span>
+                                    }
+                                }
+                            </div>
+                            <div class="mt-4 d-flex align-items-center">
+                                @Html.ActionLink(item.Prezzo.ToString("F2") + "€ - Rimuovi", "Delete", new { id = item.idProdotto }, new { @class = "shadow btn btn-outline-danger w-100 rounded-pill mb-2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-12 col-md-4 px-4 px-md-0">
+            @using (Html.BeginForm("Ordina", "Carrello", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-12 bg-white shadow rounded-3 mb-3">
+                        <h3 class="fs-4 my-3 fw-bold">Pizzeria BellaNapoli</h3>
+                        @if (DateTime.Now < new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 30, 0) || DateTime.Now > new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 0, 0))
+                        {
+                            <p class="text-orange mb-0 pb-0"><span class="fw-bolder">Chiusi</span> • 18.30 - 23.00</p>
+                            <p class="text-orange m-0 p-0 mb-2">Il tuo ordine verra' evaso dalle 18.30</p>
+                        }
+                        else
+                        {
+                            <p class="text-success mb-0 pb-0"><span class="fw-bolder">Aperti</span> • Fino alle 23:00</p>
+                            <p class="text-success m-0 p-0 mb-2">Il tuo ordine verra' evaso il prima possibile</p>
+                        }
+                    </div>
+
+                    <div class="col-12 bg-white shadow rounded-3 mb-3">
+                        <div class="input-group my-3">
+                            <span class="input-group-text border-end-0"><i class="bi bi-list"></i></span>
+                            <input class="border-start-0 form-control rounded-0 rounded-end delivery" value="Consegna a domicilio" readonly style="pointer-events: none; cursor: default;">
+                        </div>
+
+                        <div class="input-group my-3">
+                            <span class="input-group-text"><i class="bi bi-geo-alt-fill text-danger"></i></span>
+                            <input placeholder="Il tuo indirizzo" type="text" class="bg-white form-control rounded-0 rounded-end" id="indirizzo" name="indirizzo" required>
+                        </div>
+                    </div>
+                    <div class="col-12 bg-white shadow rounded-3 mb-5">
+                        <h3 class="fs-4 my-3 fw-bolder">Riepilogo ordine</h3>
+                        @foreach (var item in Model)
+                        {
+                            <p>@item.Quantita x @item.Nome - @item.Prezzo.ToString("F2")€</p>
+                        }
+
+                        <textarea placeholder="Note aggiuntive sul tuo ordine..." id="note" name="note" required class="form-control bg-white rounded-3" rows="3" style="resize: none;"></textarea>
+                        @{
+                            double maxMinuti = Model.Max(item => item.Consegna.TotalMinutes);
+                            TimeSpan maxConsegna = TimeSpan.FromMinutes(maxMinuti);
+                        }
+                        <p class="m-0 p-0 mt-3 mb-2">Consegna stimata: @maxConsegna.TotalMinutes.ToString("F0") minuti</p>
+                        <p>Totale: @string.Format("{0:F2}", Model.Sum(item => item.Prezzo * item.Quantita)) €</p>
+                        <input type="submit" class="btn btn-success menu-button w-100 p-2 mb-3" value="Conferma" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

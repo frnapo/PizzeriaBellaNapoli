@@ -8,6 +8,10 @@
             {
                 case "Pomodoro":
                     return ("red", "#ffffff");
+                case "Bufala":
+                    return ("#F5F5DC", "#212529");
+                case "Pomodorini":
+                    return ("#FF6347", "#ffffff");
                 case "Aglio":
                     return ("#C9CDCC", "#212529");
                 case "Mozzarella":
@@ -42,8 +46,30 @@
                     return ("#A0522D", "#ffffff");
                 case "Wurstel":
                     return ("#FFC0CB", "#212529");
-                case "Patatine":
+                case "Patatine fritte":
                     return ("gold", "#212529");
+                case "Olive nere":
+                    return ("#000000", "#ffffff");
+                case "Carciofi":
+                    return ("#8F9779", "#212529");
+                case "Crudo di Parma":
+                    return ("#E34234", "#ffffff");
+                case "Speck":
+                    return ("#E34234", "#ffffff");
+                case "Tonno":
+                    return ("#B22222", "#ffffff");
+                case "Salame piccante":
+                    return ("#8B0000", "#ffffff");
+                case "Cipolla rossa":
+                    return ("#A52A2A", "#ffffff");
+                case "Zucchine":
+                    return ("#228B22", "#ffffff");
+                case "Melanzane":
+                    return ("#483D8B", "#ffffff");
+                case "Mascarpone":
+                    return ("#F4A460", "#212529");
+                case "Friarielli":
+                    return ("#228B22", "#ffffff");
                 default:
                     return ("#f8f9fa", "#212529");
             }

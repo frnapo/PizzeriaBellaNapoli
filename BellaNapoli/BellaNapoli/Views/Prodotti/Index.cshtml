@@ -1,67 +1,79 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
+@model IEnumerable<BellaNapoli.Models.Prodotti>
+@using BellaNapoli.Models
 
 <h2 class="text-center heading mt-1 mb-3">Le nostre pizze</h2>
 
-<div class="container">
-    <div class="d-flex justify-content-center">
+<div class="container mb-5 pb-2">
+    <div class="d-flex justify-content-center mb-3">
         @if (User.IsInRole("Admin"))
         {
-            @Html.ActionLink("+ Aggiungi un prodotto", "Create", new { }, new { @class = "ms-2 btn btn-success menu-button px-5 mb-3 w-50" })
+            @Html.ActionLink("+ Aggiungi un prodotto", "Create", null, new { @class = "btn btn-success" })
         }
     </div>
 
-
-    @foreach (var item in Model)
-    {
-        <div class="row mb-5 mb-md-4 mx-2 rounded-3 shadow">
-        <div class="col-12 col-md-5 rounded-0 rounded-start bg-white shadow d-flex align-items-end justify-content-end px-0 text-center">
-            <img class="pizza-image rounded-0 shadow rounded-start" src="https://www.buttalapasta.it/wp-content/uploads/2021/03/pizza-marinara.jpg" alt="Pizza" style="width:100%; object-fit: cover; max-width: none;">
-        </div>
-
-            <div class="col-12 rounded-0 rounded-end col-md-7 bg-light shadow d-flex flex-column">
-                <div>
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h3 class="ms-2 pizza-head display-5 mt-1 mt-md-3 mb-0 pb-0">@item.Nome</h3>
-                            <span class="ms-2"><i class="bi bi-clock me-2"></i></span>@item.Consegna.Minutes minuti
-                        </div>
-                        <div class="mt-2">
-                            @if (User.IsInRole("Admin"))
-                            {
-                                @Html.ActionLink(" ", "Edit", new { id = item.idProdotto }, new { @class = "bi bi-pencil-square text-decoration-none admin-action fs-4 text-dark mx-2" })
-                                @Html.ActionLink(" ", "Delete", new { id = item.idProdotto }, new { @class = "bi bi-x-circle text-decoration-none fs-4 admin-action text-danger" })
-                            }
-                        </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+        @foreach (var item in Model)
+        {
+            <div class="col pizza-col">
+                <div class="mb-5">
+                    <div class="bg-white pizza-image-container">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="mb-3">
+                                @Html.ActionLink("Modifica", "Edit", new { id = item.idProdotto }, new { @class = "bi bi-pencil-square text-decoration-none btn btn-outline-primary mx-2" })
+                                @Html.ActionLink("Elimina", "Delete", new { id = item.idProdotto }, new { @class = "bi bi-x-circle text-decoration-none btn btn-outline-danger" })
+                            </div>
+                        }
+                        <img src="@item.Foto" alt="Pizza" class="pizza-image shadow">
                     </div>
-                    <p class="ms-2 mt-3">@item.Ingredienti</p>
-                    <div class="ms-2 d-flex">
+                    <div class="pizza-info p-3">
+
+                        <div class="d-flex align-items-center">
+                            <h3 class="fs-4 mb-1">@item.Nome</h3>
+                            <span> - @item.Consegna.Minutes minuti <i class="bi bi-clock me-2 mb-1" style="font-size: 10px;"></i></span>
+                        </div>
+
+                        <p class="pt-0 mt-0">
+                            @{
+                                var ingredienti = item.Ingredienti.Split(',');
+                                foreach (var ingrediente in ingredienti)
+                                {
+                                    var (badgeColor, textColor) = ingrediente.GetBadgeColors();
+                                    <span class="badge" style="background-color: @badgeColor; color: @textColor">@ingrediente</span>
+                                }
+                            }
+                        </p>
 
                         @using (Html.BeginForm("AddToCart", "Prodotti", FormMethod.Post))
                         {
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@item.idProdotto" />
-                            <label for="Quantita">Quantità:</label>
-                            <input id="Quantita" type="number" name="quantita" value="1" min="1" max="30">
-                            <input type="submit" value="@item.Prezzo.ToString("F2")€ - Carrello" class="btn btn-outline-success w-100 shadow menu-button rounded-0 buy-button px-4 mb-3">
+                            <div class="d-flex align-items-center">
+                                <input id="Quantita" type="number" name="quantita" value="1" min="1" max="30" class="shadow form-control me-2" style="width: auto;">
+                                <input type="submit" value="@item.Prezzo.ToString("F2")€ - Carrello" class="btn btn-success shadow menu-button rounded-0 buy-button w-100">
+                            </div>
                         }
+
                     </div>
                 </div>
             </div>
+                }
+            </div>
         </div>
-    }
-
-</div>
 
 
-@* ------------------------------ TOASTS --------------------------------- *@
 
-@if (TempData["CreateMess"] != null)
-{
-    <script src="~/Scripts/jquery-3.4.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script type="text/javascript">
+
+        @* ------------------------------ TOASTS --------------------------------- *@
+
+        @if (TempData["CreateMess"] != null)
+        {
+            <script src="~/Scripts/jquery-3.4.1.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+            <script type="text/javascript">
         toastr.options = {
             "closeButton": true,
             "debug": false,
@@ -80,14 +92,14 @@
             "hideMethod": "fadeOut"
         }
         toastr.success('@TempData["CreateMess"]')
-    </script>
-}
+            </script>
+        }
 
-@if (TempData["CartMessage"] != null)
-{
-    <script src="~/Scripts/jquery-3.4.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script type="text/javascript">
+        @if (TempData["CartMessage"] != null)
+        {
+            <script src="~/Scripts/jquery-3.4.1.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+            <script type="text/javascript">
         toastr.options = {
             "closeButton": true,
             "debug": false,
@@ -106,5 +118,5 @@
             "hideMethod": "fadeOut"
         }
         toastr.warning('@TempData["CartMessage"]')
-    </script>
-}
+            </script>
+        }

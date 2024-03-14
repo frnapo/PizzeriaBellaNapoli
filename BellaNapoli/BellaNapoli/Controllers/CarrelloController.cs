@@ -81,5 +81,16 @@ namespace BellaNapoli.Controllers
             TempData["CreateMess"] = "L'ordine è stato inviato correttamente";
             return RedirectToAction("OrdiniUtente", "Ordini");
         }
+
+        public ActionResult CartClear()
+        {
+            var cart = Session["cart"] as List<Prodotti>;
+            if (cart != null)
+            {
+                cart.Clear();
+            }
+            TempData["CreateMess"] = "Il carrello è stato svuotato";
+            return RedirectToAction("Index", "Prodotti");
+        }
     }
 }

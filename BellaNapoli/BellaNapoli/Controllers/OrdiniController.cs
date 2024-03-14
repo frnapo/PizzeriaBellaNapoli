@@ -1,6 +1,8 @@
 ﻿using BellaNapoli.Models;
+using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace BellaNapoli.Controllers
@@ -70,6 +72,20 @@ namespace BellaNapoli.Controllers
                 .Where(o => o.FK_idUtente == userId)
                 .OrderByDescending(o => o.DataOrdine);
             return View(ordini.ToList());
+        }
+
+        public async Task<ActionResult> GetNumeroOrdini()
+        {
+            int totale = await db.Ordini.Where(o => o.isEvaso == true).CountAsync();
+            return Json(totale, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> IncassatoPerGiorno(DateTime data)
+        {
+            decimal incasso = await db.Ordini
+                .Where(o => o.DataOrdine.Year == data.Year && o.DataOrdine.Month == data.Month && o.DataOrdine.Day == data.Day)
+                .SumAsync(o => o.Totale);
+            return Json(incasso, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace BellaNapoli.Models
         [Key]
         public int idProdotto { get; set; }
 
+
         [Required]
         [StringLength(50)]
         public string Nome { get; set; }
@@ -40,5 +41,6 @@ namespace BellaNapoli.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dettagli> Dettagli { get; set; }
+
     }
 }

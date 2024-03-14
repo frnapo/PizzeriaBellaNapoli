@@ -23,25 +23,28 @@
             <span class="navbar-toggler-icon border-0"></span>
         </button>
         <div class="collapse navbar-collapse d-md-inline-flex justify-content-between">
+
+        
+
             <ul class="navbar-nav ms-auto d-flex align-items-center">
-                <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link fs-6 me-3" })</li>
-                <li>@Html.ActionLink("Storia", "Storia", "Home", new { area = "" }, new { @class = "nav-link fs-6 me-3" })</li>
-                <li>@Html.ActionLink("Le nostre pizze", "Index", "Prodotti", new { area = "" }, new { @class = "nav-link fs-6 me-3" })</li>
+                <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link fs-6 me-3" })</li>
+                <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" && ViewContext.RouteData.Values["Action"].ToString() == "Storia" ? "active" : "")">@Html.ActionLink("Storia", "Storia", "Home", new { area = "" }, new { @class = "nav-link fs-6 me-3" })</li>
+                <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Prodotti" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Le nostre pizze", "Index", "Prodotti", new { area = "" }, new { @class = "nav-link fs-6 me-3" })</li>
                 @if (User.Identity.IsAuthenticated)
                 {
                     if (User.IsInRole("Admin"))
                     {
-                        <li>@Html.ActionLink(" ", "Index", "Ordini", new { area = "" }, new { @class = "bi bi-person-lines-fill nav-link fs-4 me-3" })</li>
+                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Ordini" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink(" ", "Index", "Ordini", new { area = "" }, new { @class = "bi bi-person-lines-fill nav-link fs-4 me-3" })</li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink(" ", "OrdiniUtente", "Ordini", new { }, new { @class = "bi bi-person-lines-fill nav-link fs-4 me-3" })</li>
+                        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Ordini" && ViewContext.RouteData.Values["Action"].ToString() == "OrdiniUtente" ? "active" : "")">@Html.ActionLink(" ", "OrdiniUtente", "Ordini", new { }, new { @class = "bi bi-person-lines-fill nav-link fs-4 me-3" })</li>
                     }
 
 
                     var cart = (List<BellaNapoli.Models.Prodotti>)Session["cart"];
                     var cartCount = cart?.Sum(p => p.Quantita) ?? 0;
-                    <li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Carrello" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
                         @Html.ActionLink(" ", "Index", "Carrello", new { area = "" }, new { @class = "bi bi-bag nav-link fs-5 me-3" })
                         @if (cartCount > 0)
                         {
@@ -52,8 +55,8 @@
                 }
                 else
                 {
-                    <li>@Html.ActionLink("Registrati", "Register", "Home", new { area = "" }, new { @class = "nav-link fs-6 me-3" })</li>
-                    <li>@Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "nav-link fs-6 me-2" })</li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" && ViewContext.RouteData.Values["Action"].ToString() == "Register" ? "active" : "")">@Html.ActionLink("Registrati", "Register", "Home", new { area = "" }, new { @class = "nav-link fs-6 me-3" })</li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" && ViewContext.RouteData.Values["Action"].ToString() == "Login" ? "active" : "")">@Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "nav-link fs-6 me-2" })</li>
                 }
             </ul>
         </div>
@@ -63,12 +66,14 @@
     </div>
 
     <footer id="footer">
-        <p class="p-5 text-center text-white m-0">Pizzeria BellaNapoli - Tutti i diritti riservati</p>
+        <p class="p-5 pb-0 text-center text-white m-0">Pizzeria BellaNapoli - Tutti i diritti riservati</p>
+        <p class="pb-5 text-center text-white m-0">© 2024 Napoli Francesco</p>
     </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init();

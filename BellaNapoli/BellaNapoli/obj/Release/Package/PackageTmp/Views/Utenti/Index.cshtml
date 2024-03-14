@@ -1,0 +1,66 @@
+﻿@model IEnumerable<BellaNapoli.Models.Utenti>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="text-center heading mt-3 mb-0">Gestione utenti</h2>
+<h6 class="text-center m-0 p-0 mb-5"> @Html.ActionLink("Passa a gestione ordini", "Index", "Ordini")</h6>
+
+<div class="table-responsive px-4 bg-white bg-opacity-50 shadow">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="d-none d-sm-table-cell">
+                    Nome
+                </th>
+                <th>
+                    Cognome
+                </th>
+                <th>
+                    E-mail
+                </th>
+                <th>
+                    Ruolo
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="d-none d-sm-table-cell">
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cognome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @if (item.isAdmin == false)
+                        {
+                            using (Html.BeginForm("MakeAdmin", "Utenti", new { id = item.idUtente }, FormMethod.Post, new { @class = "form-inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="submit" value="Utente" class="btn btn-secondary btn-sm" />
+                            }
+                        }
+                        else
+                        {
+                            using (Html.BeginForm("RemoveAdmin", "Utenti", new { id = item.idUtente }, FormMethod.Post, new { @class = "form-inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="submit" value="Admin" class="btn btn-success btn-sm" />
+                            }
+                        }
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
