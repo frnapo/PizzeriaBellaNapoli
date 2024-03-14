@@ -16,7 +16,7 @@
 
                     <div class="col-7 d-flex flex-column">
                         <div>
-                            <h3 class="fs-4 mt-3">@item.Nome</h3>
+                            <h3 class="fs-4 mt-3">@item.Quantita x @item.Nome</h3>
                             <div>
                                 @{
                                     var ingredienti = item.Ingredienti.Split(',');
@@ -68,7 +68,7 @@
                         <h3 class="fs-4 my-3 fw-bolder">Riepilogo ordine</h3>
                         @foreach (var item in Model)
                         {
-                            <p>1x @item.Nome - @item.Prezzo.ToString("F2")€</p>
+                            <p>@item.Quantita x @item.Nome - @item.Prezzo.ToString("F2")€</p>
                         }
 
                         <textarea placeholder="Note aggiuntive sul tuo ordine..." id="note" name="note" required class="form-control bg-white rounded-3" rows="3" style="resize: none;"></textarea>
@@ -77,8 +77,7 @@
                             TimeSpan maxConsegna = TimeSpan.FromMinutes(maxMinuti);
                         }
                         <p class="m-0 p-0 mt-3 mb-2">Consegna stimata: @maxConsegna.TotalMinutes.ToString("F0") minuti</p>
-
-                        <p>Totale: @Model.Sum(item => item.Prezzo).ToString("F2")€</p>
+                        <p>Totale: @string.Format("{0:F2}", Model.Sum(item => item.Prezzo * item.Quantita)) €</p>
                         <input type="submit" class="btn btn-success menu-button w-100 p-2 mb-3" value="Conferma" />
                     </div>
                 </div>

@@ -27,6 +27,9 @@ namespace BellaNapoli.Models
 
         public string Foto3 { get; set; }
 
+        [NotMapped]
+        public int? Quantita { get; set; }
+
         [Column(TypeName = "money")]
         public decimal Prezzo { get; set; }
 

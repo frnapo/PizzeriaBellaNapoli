@@ -29,11 +29,18 @@
                 <li>@Html.ActionLink("Le nostre pizze", "Index", "Prodotti", new { area = "" }, new { @class = "nav-link fs-6 me-3" })</li>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <li>@Html.ActionLink(" ", "Index", "Profilo", new { area = "" }, new { @class = "bi bi-person-lines-fill nav-link fs-4 me-3" })</li>
-                    
-                        var cart = (List<BellaNapoli.Models.Prodotti>)Session["cart"];
-                        var cartCount = cart?.Count ?? 0;
-                    
+                    if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink(" ", "Index", "Ordini", new { area = "" }, new { @class = "bi bi-person-lines-fill nav-link fs-4 me-3" })</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(" ", "OrdiniUtente", "Ordini", new { }, new { @class = "bi bi-person-lines-fill nav-link fs-4 me-3" })</li>
+                    }
+
+
+                    var cart = (List<BellaNapoli.Models.Prodotti>)Session["cart"];
+                    var cartCount = cart?.Sum(p => p.Quantita) ?? 0;
                     <li>
                         @Html.ActionLink(" ", "Index", "Carrello", new { area = "" }, new { @class = "bi bi-bag nav-link fs-5 me-3" })
                         @if (cartCount > 0)
@@ -68,3 +75,4 @@
     </script>
 </body>
 </html>
+

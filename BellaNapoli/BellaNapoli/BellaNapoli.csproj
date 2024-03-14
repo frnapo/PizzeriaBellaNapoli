@@ -165,7 +165,9 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\CarrelloController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrdiniController.cs" />
     <Compile Include="Controllers\ProdottiController.cs" />
+    <Compile Include="Controllers\UtentiController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -258,6 +260,10 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Carrello\Index.cshtml" />
     <Content Include="Views\Home\Storia.cshtml" />
+    <Content Include="Views\Ordini\Index.cshtml" />
+    <Content Include="Views\Ordini\_Details.cshtml" />
+    <Content Include="Views\Utenti\Index.cshtml" />
+    <Content Include="Views\Ordini\OrdiniUtente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -16,9 +16,9 @@
     @foreach (var item in Model)
     {
         <div class="row mb-5 mb-md-4 mx-2 rounded-3 shadow">
-            <div class="col-12 col-md-5 rounded-0 rounded-start bg-white shadow d-flex align-items-end justify-content-end  px-0 text-center">
-               <img class="p-3 pizza-image" src="./Content/imgs/@item.Foto" alt="Pizza" style="width:100%; max-width: 200px">
-            </div>
+        <div class="col-12 col-md-5 rounded-0 rounded-start bg-white shadow d-flex align-items-end justify-content-end px-0 text-center">
+            <img class="pizza-image rounded-0 shadow rounded-start" src="https://www.buttalapasta.it/wp-content/uploads/2021/03/pizza-marinara.jpg" alt="Pizza" style="width:100%; object-fit: cover; max-width: none;">
+        </div>
 
             <div class="col-12 rounded-0 rounded-end col-md-7 bg-light shadow d-flex flex-column">
                 <div>
@@ -37,8 +37,15 @@
                     </div>
                     <p class="ms-2 mt-3">@item.Ingredienti</p>
                     <div class="ms-2 d-flex">
-                        <input type="number" name="quantita" value="1" min="1" max="30">
-                        <div class="btn btn-outline-success w-100 shadow menu-button rounded-0 buy-button px-4 mb-3" onclick="location.href='@Url.Action("AddToCart", "Prodotti", new { id = item.idProdotto })'">@item.Prezzo.ToString("F2")€ - Carrello</div>
+
+                        @using (Html.BeginForm("AddToCart", "Prodotti", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.idProdotto" />
+                            <label for="Quantita">Quantità:</label>
+                            <input id="Quantita" type="number" name="quantita" value="1" min="1" max="30">
+                            <input type="submit" value="@item.Prezzo.ToString("F2")€ - Carrello" class="btn btn-outline-success w-100 shadow menu-button rounded-0 buy-button px-4 mb-3">
+                        }
                     </div>
                 </div>
             </div>

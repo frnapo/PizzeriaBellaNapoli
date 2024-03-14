@@ -30,7 +30,14 @@ namespace BellaNapoli.Controllers
                 var productToRemove = cart.FirstOrDefault(p => p.idProdotto == id);
                 if (productToRemove != null)
                 {
-                    cart.Remove(productToRemove);
+                    if (productToRemove.Quantita > 1)
+                    {
+                        productToRemove.Quantita--;
+                    }
+                    else
+                    {
+                        cart.Remove(productToRemove);
+                    }
                 }
             }
 
@@ -63,7 +70,7 @@ namespace BellaNapoli.Controllers
                     Dettagli newDetail = new Dettagli();
                     newDetail.FK_idOrdine = newOrder.idOrdine;
                     newDetail.FK_idProdotto = product.idProdotto;
-                    newDetail.Quantita = 1;
+                    newDetail.Quantita = Convert.ToInt32(product.Quantita);
 
                     db.Dettagli.Add(newDetail);
                     db.SaveChanges();
@@ -72,7 +79,7 @@ namespace BellaNapoli.Controllers
             }
 
             TempData["CreateMess"] = "L'ordine è stato inviato correttamente";
-            return RedirectToAction("Index", "Prodotti");
+            return RedirectToAction("OrdiniUtente", "Ordini");
         }
     }
 }

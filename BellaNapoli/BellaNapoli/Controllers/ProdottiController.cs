@@ -104,13 +104,20 @@ namespace BellaNapoli.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult AddToCart(int id)
+        public ActionResult AddToCart(int id, int quantita)
         {
             var prodotto = db.Prodotti.Find(id);
             if (prodotto != null)
             {
                 var cart = Session["cart"] as List<Prodotti> ?? new List<Prodotti>();
-                cart.Add(prodotto);
+                prodotto.Quantita = quantita;
+                if (cart.Any(p => p.idProdotto == id))
+                {
+                    var product = cart.FirstOrDefault(p => p.idProdotto == id);
+                    product.Quantita += quantita;
+                }
+                else
+                    cart.Add(prodotto);
                 Session["cart"] = cart;
                 TempData["CreateMess"] = "Prodotto aggiunto al carrello";
             }
