@@ -12,7 +12,8 @@ namespace BellaNapoli.Controllers
     {
         private ModelDbContext db = new ModelDbContext();
 
-        // GET: Ordini
+        // Index per l'admin per la vista degli ordini
+        // Ordina per data decrescente in base alla data
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
@@ -20,6 +21,8 @@ namespace BellaNapoli.Controllers
             return View(ordini.ToList());
         }
         [Authorize]
+        // Restituisce la vista parziale con i dettagli dell'ordine
+
         public PartialViewResult Details(int? id)
         {
             if (id == null)
@@ -35,6 +38,8 @@ namespace BellaNapoli.Controllers
                 return PartialView("_Details", Dettagli.ToList());
             }
         }
+        //Action per settare isEvaso a true
+        //Solo l'admin può accedere a questa action
         [Authorize(Roles = "Admin")]
         public ActionResult isEvaso(int id)
         {
@@ -44,6 +49,7 @@ namespace BellaNapoli.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        // Action per resettare isEvaso, quindi a false
         [Authorize(Roles = "Admin")]
         public ActionResult noEvaso(int id)
         {
@@ -64,6 +70,9 @@ namespace BellaNapoli.Controllers
         }
 
 
+        //Action per la vista degli ordini dell'utente
+        // Prende gli ordini confrontando Email con l'utente loggato
+        // Ordina per data decrescente in base alla data
         public ActionResult OrdiniUtente()
         {
             var userId = db.Utenti.FirstOrDefault(u => u.Email == User.Identity.Name).idUtente;
@@ -74,12 +83,15 @@ namespace BellaNapoli.Controllers
             return View(ordini.ToList());
         }
 
+
+        // Action asincrona per il totale degli ordini evasi
         public async Task<ActionResult> GetNumeroOrdini()
         {
             int totale = await db.Ordini.Where(o => o.isEvaso == true).CountAsync();
             return Json(totale, JsonRequestBehavior.AllowGet);
         }
 
+        // Action asincrona l'incasso in una data specifica
         public async Task<ActionResult> IncassatoPerGiorno(DateTime data)
         {
             decimal incasso = await db.Ordini

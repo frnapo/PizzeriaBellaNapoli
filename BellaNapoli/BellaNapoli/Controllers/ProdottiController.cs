@@ -27,6 +27,9 @@ namespace BellaNapoli.Controllers
         {
             return View();
         }
+        // Action Create che permette l'upload di immagine
+        // e la creazione di un nuovo prodotto
+        // con debug per verificare eventuali errori (ne ho avuti molti ahha)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "idProdotto,Nome,Foto,Foto2,Foto3,Prezzo,Consegna,Ingredienti")] Prodotti prodotti, HttpPostedFileBase file)
@@ -46,7 +49,7 @@ namespace BellaNapoli.Controllers
                 }
                 else
                 {
-                    prodotti.Foto = "/Content/Img/Default.jpg";
+                    prodotti.Foto = "/Content/Img/Default.png";
                 }
 
                 if (ModelState.IsValid)
@@ -63,6 +66,7 @@ namespace BellaNapoli.Controllers
             return View(prodotti);
         }
 
+
         [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
@@ -78,7 +82,9 @@ namespace BellaNapoli.Controllers
             return View(prodotti);
         }
 
-
+        //Action per la modifica di un prodotto
+        // Permette di cambiare l'immagine del prodotto
+        //Ma in caso non venga caricata nessuna immagine, verra' comunque salvata la precedente
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, [Bind(Include = "idProdotto,Nome,Foto,Foto2,Foto3,Prezzo,Consegna,Ingredienti,File")] Prodotti prodotti, HttpPostedFileBase File)
@@ -87,17 +93,27 @@ namespace BellaNapoli.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var oldProduct = db.Prodotti.AsNoTracking().FirstOrDefault(p => p.idProdotto == id);
                     if (File != null && File.ContentLength > 0)
                     {
-                        var fileName = Path.GetFileName(File.FileName);
-                        var path = Path.Combine(Server.MapPath("~/Content/Img"), fileName);
-                        if (!Directory.Exists(Server.MapPath("~/Content/Img")))
+                        if (!string.IsNullOrWhiteSpace(oldProduct.Foto))
                         {
-                            Directory.CreateDirectory(Server.MapPath("~/Content/Img"));
+                            var existingImagePath = Path.Combine(Server.MapPath("~/Content/Img/"), oldProduct.Foto);
+                            if (System.IO.File.Exists(existingImagePath))
+                            {
+                                System.IO.File.Delete(existingImagePath);
+                            }
                         }
+
+                        var fileName = Path.GetFileNameWithoutExtension(File.FileName) + DateTime.Now.Ticks + Path.GetExtension(File.FileName);
+                        var path = Path.Combine(Server.MapPath("~/Content/Img/"), fileName);
                         File.SaveAs(path);
 
                         prodotti.Foto = "/Content/Img/" + fileName;
+                    }
+                    else
+                    {
+                        prodotti.Foto = oldProduct.Foto;
                     }
 
                     db.Entry(prodotti).State = EntityState.Modified;
@@ -128,7 +144,7 @@ namespace BellaNapoli.Controllers
             }
             return View(prodotti);
         }
-
+        // Action per eliminare un prodotto
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -149,6 +165,8 @@ namespace BellaNapoli.Controllers
             base.Dispose(disposing);
         }
 
+        //Action per aggiungere un prodotto al carrello
+        //Crea una lista di prodotti e la aggiunge alla sessione
         public ActionResult AddToCart(int id, int quantita)
         {
             var prodotto = db.Prodotti.Find(id);

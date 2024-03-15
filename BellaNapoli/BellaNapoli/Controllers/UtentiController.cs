@@ -9,9 +9,9 @@ namespace BellaNapoli.Controllers
     public class UtentiController : Controller
     {
         private ModelDbContext db = new ModelDbContext();
-
-        // prendo tutti gli utenti tranne l'utente loggato
-        // per evitare che l'utente si tolga l'admin da solo
+        // Ritorna la lista di tutti gli utenti
+        // Prendo tutti gli utenti tranne l'utente loggato
+        // Per evitare che l'utente si tolga l'admin da solo
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
@@ -30,7 +30,8 @@ namespace BellaNapoli.Controllers
             base.Dispose(disposing);
         }
 
-
+        // Metodo per rendere un utente admin
+        // Setta il campo isAdmin a true
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult MakeAdmin(int? id)
@@ -42,6 +43,8 @@ namespace BellaNapoli.Controllers
             return RedirectToAction("Index");
         }
 
+        // Metodo per togliere l'admin ad un utente
+        // Resetta il campo isAdmin, quindi a false
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult RemoveAdmin(int? id)

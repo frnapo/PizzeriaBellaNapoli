@@ -13,7 +13,9 @@ namespace BellaNapoli.Controllers
             return View();
         }
 
-        // actions per la registrazione e il login
+        // Metodi per la registrazione e il login
+        // Con TempData per errori e messaggi
+        // Uso FormsAuthentication per il login
         public ActionResult Register()
         {
             return View();
@@ -61,6 +63,7 @@ namespace BellaNapoli.Controllers
             }
         }
 
+        // Metodo per il logout
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();

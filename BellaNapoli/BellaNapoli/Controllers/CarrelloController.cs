@@ -10,7 +10,9 @@ namespace BellaNapoli.Controllers
     {
         private ModelDbContext db = new ModelDbContext();
 
-        // GET: Carrello
+
+        // Mostra il carrello con i prodotti selezionati dall'utente
+        // Se il carrello è vuoto, reindirizza alla pagina dei prodotti con un messaggio
         public ActionResult Index()
         {
             var cart = Session["cart"] as List<Prodotti>;
@@ -22,6 +24,8 @@ namespace BellaNapoli.Controllers
             return View(cart);
         }
 
+        // Rimuove un prodotto dal carrello
+        // Se la quantità del prodotto è maggiore di 1, decrementa la quantità
         public ActionResult Delete(int? id)
         {
             var cart = Session["cart"] as List<Prodotti>;
@@ -44,7 +48,8 @@ namespace BellaNapoli.Controllers
             return RedirectToAction("Index");
         }
 
-        //action per pushare i prodotti nel db su Ordini e Dettagli
+
+        // Action per pushare prodotti nel carrello nel db
         [HttpPost]
         public ActionResult Ordina(string note, string indirizzo)
         {
@@ -65,6 +70,8 @@ namespace BellaNapoli.Controllers
                 db.Ordini.Add(newOrder);
                 db.SaveChanges();
 
+                // Aggiunge i dettagli dell'ordine
+                // Per ogni prodotto nel carrello, crea un dettaglio
                 foreach (var product in cart)
                 {
                     Dettagli newDetail = new Dettagli();
@@ -82,6 +89,8 @@ namespace BellaNapoli.Controllers
             return RedirectToAction("OrdiniUtente", "Ordini");
         }
 
+
+        // Svuota il carrello
         public ActionResult CartClear()
         {
             var cart = Session["cart"] as List<Prodotti>;
